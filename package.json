@@ -1,0 +1,19 @@
+{
+  "name": "hacocms-js-sdk",
+  "version": "1.0.0",
+  "description": "JavaScript/TypeScript SDK for hacoCMS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hacocms/hacocms-js-sdk.git"
+  },
+  "author": "Seesaa Inc.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hacocms/hacocms-js-sdk/issues"
+  },
+  "homepage": "https://github.com/hacocms/hacocms-js-sdk#readme"
+}
