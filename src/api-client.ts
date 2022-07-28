@@ -25,11 +25,11 @@ export class HacoCmsClient {
   }
 
   /**
-   * リスト形式の API に GET リクエストを送信します。
+   * コンテンツの一覧を取得します。
    * {@link https://hacocms.com/references/content-api#tag/%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84/paths/~1api~1v1~1%7Bendpoint%7D/get}
    *
-   * @param Constructor レスポンスボディの JSON オブジェクトを引数とするコンストラクタを持つクラスオブジェクト
-   * @param endpoint API のエンドポイント
+   * @param Constructor コンテンツの JSON オブジェクトを引数とするコンストラクタを持つクラスオブジェクト
+   * @param endpoint リスト形式 API のエンドポイント
    * @param query クエリパラメータ
    * @returns API のレスポンスボディ
    */
@@ -45,12 +45,12 @@ export class HacoCmsClient {
   }
 
   /**
-   * シングル形式の API に GET リクエストを送信します。
+   * シングル形式 API のコンテンツを取得します。
    * {@link https://hacocms.com/references/content-api#tag/%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84/paths/~1api~1v1~1%7Bendpoint%7D/get}
    *
-   * @param Constructor レスポンスボディの JSON オブジェクトを引数とするコンストラクタを持つクラスオブジェクト
-   * @param endpoint API のエンドポイント
-   * @returns コンテンツのオブジェクト
+   * @param Constructor コンテンツの JSON オブジェクトを引数とするコンストラクタを持つクラスオブジェクト
+   * @param endpoint シングル形式 API のエンドポイント
+   * @returns コンテンツのオブジェクト（`Constructor` 型）
    */
   protected async getSingle<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string) {
     const res = await this.axios.get<JsonType<ApiSchema>>(endpoint)
