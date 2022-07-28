@@ -37,16 +37,3 @@ export type QueryParameters = {
 
   status: number
 }
-
-const concat = (params: URLSearchParams, [key, value]: [string, { toString(): string }]) => {
-  if (value != null) {
-    params.append(key, value.toString())
-  }
-  return params
-}
-
-export const paramsSerializer = (params: any) => {
-  return Object.entries(params as Partial<QueryParameters>)
-    .reduce(concat, new URLSearchParams())
-    .toString()
-}

@@ -2,7 +2,19 @@ import axios from 'axios'
 import { ApiContent } from './api-content'
 import { ConstructorFromJson } from './json-utils'
 import { ApiResponse, ApiResponseInJson } from './api-response'
-import { QueryParameters, paramsSerializer } from './query'
+import { QueryParameters } from './query'
+
+const paramsSerializer = (params: any) => {
+  const concat = (params: URLSearchParams, [key, value]: [string, { toString(): string }]) => {
+    if (value != null) {
+      params.append(key, value.toString())
+    }
+    return params
+  }
+  return Object.entries(params as Partial<QueryParameters>)
+    .reduce(concat, new URLSearchParams())
+    .toString()
+}
 
 /**
  * HacoCMS API client
