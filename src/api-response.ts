@@ -18,9 +18,9 @@ export type ApiResponseInJson<ApiSchema extends ApiContent> = {
 const from = <ApiSchema extends ApiContent>(json: JsonType<ApiSchema>, Constructor: ConstructorFromJson<ApiSchema>) => new Constructor(json)
 
 /**
- * typed API response
+ * typed list API response
  */
-export class ApiResponse<ApiSchema extends ApiContent> {
+export class ListApiResponse<ApiSchema extends ApiContent> {
   readonly meta: ApiMetaResponse
   readonly data: ApiSchema[]
 

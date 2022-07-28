@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ApiContent } from './api-content'
 import { ConstructorFromJson } from './json-utils'
-import { ApiResponse, ApiResponseInJson } from './api-response'
+import { ListApiResponse, ApiResponseInJson } from './api-response'
 import { QueryParameters } from './query'
 
 /**
@@ -38,16 +38,9 @@ export class HacoCmsClient {
       params: Object.fromEntries(Object.entries(query).map(([k, v]) => [k, v.toString()])),
     })
     try {
-      return new ApiResponse(res.data, Constructor)
+      return new ListApiResponse(res.data, Constructor)
     } catch (error) {
       throw new Error(`failed to construct an API response object from JSON: ${JSON.stringify(res.data)}`)
     }
-  }
-
-  /**
-   * @deprecated
-   */
-  protected async get<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, path: string, params: Partial<QueryParameters> = {}) {
-    return this.getList(Constructor, path, params)
   }
 }
