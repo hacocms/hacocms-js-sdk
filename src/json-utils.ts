@@ -16,24 +16,15 @@ export type JsonType<V> =
 export type ConstructorFromJson<Typed extends object> = { new (json: JsonType<Typed>): Typed }
 
 /**
- * converters JSON value to the one made typed
+ * converts a JSON string that represents Date into Date object
+ * @param value a string, which can be parsed with Date.parse
+ * @returns a Date object that the string represents
  */
-export class JsonValueConverter {
-  /**
-   * converts a JSON string that represents Date into Date object
-   * @param value a string, which can be parsed with Date.parse
-   * @returns a Date object that the string represents
-   */
-  static toDate(value: string): Date {
-    return new Date(value)
-  }
+export const toDate = (value: string) => new Date(value)
 
-  /**
-   * converts a JSON string that represents Date or null value into Date object or null, respectively
-   * @param value a string, which can be parsed as Date, or null
-   * @returns a Date object that the string represents unless the value is null, otherwise null
-   */
-  static toNullableDate(value: string | null): Date | null {
-    return value != null ? new Date(value) : null
-  }
-}
+/**
+ * converts a JSON string that represents Date or null value into Date object or null, respectively
+ * @param value a string, which can be parsed as Date, or null
+ * @returns a Date object that the string represents unless the value is null, otherwise null
+ */
+export const toNullableDate = (value: string | null) => (value != null ? new Date(value) : null)

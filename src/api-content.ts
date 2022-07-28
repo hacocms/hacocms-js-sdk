@@ -1,4 +1,4 @@
-import { JsonValueConverter, JsonType } from './json-utils'
+import { JsonType, toDate, toNullableDate } from './json-utils'
 
 /**
  * コンテンツの基底クラス
@@ -24,10 +24,10 @@ export abstract class ApiContent {
    */
   constructor(json: JsonType<ApiContent>) {
     this.id = json.id
-    this.createdAt = JsonValueConverter.toDate(json.createdAt)
-    this.updatedAt = JsonValueConverter.toDate(json.createdAt)
-    this.publishedAt = JsonValueConverter.toNullableDate(json.publishedAt)
-    this.closedAt = JsonValueConverter.toNullableDate(json.closedAt)
+    this.createdAt = toDate(json.createdAt)
+    this.updatedAt = toDate(json.createdAt)
+    this.publishedAt = toNullableDate(json.publishedAt)
+    this.closedAt = toNullableDate(json.closedAt)
   }
 
   // to avoid a warning "Cannot stringify arbitrary non-POJOs"
