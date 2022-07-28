@@ -32,7 +32,7 @@ export class HacoCmsClient {
    * @param params query parameters
    * @returns response body from the API
    */
-  protected async get<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, path: string, params: Partial<QueryParameters> = {}) {
+  protected async getList<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, path: string, params: Partial<QueryParameters> = {}) {
     const res = await this.axios.get<ApiResponseInJson<ApiSchema>>(path, {
       params: Object.fromEntries(Object.entries(params).map(([k, v]) => [k, v.toString()]))
     })
@@ -41,5 +41,12 @@ export class HacoCmsClient {
     } catch (error) {
       throw new Error(`failed to construct an API response object from JSON: ${JSON.stringify(res.data)}`)
     }
+  }
+
+  /**
+   * @deprecated
+   */
+  protected async get<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, path: string, params: Partial<QueryParameters> = {}) {
+    return this.getList(Constructor, path, params)
   }
 }

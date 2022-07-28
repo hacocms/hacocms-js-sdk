@@ -9,7 +9,7 @@ class DummyApiContent extends ApiContent {
 
 // to just publish the protected methods
 class HacoCmsClient extends BaseClient {
-  get = super.get
+  getList = super.getList
 }
 
 const dummyAccessToken = 'DUMMY_ACCESS_TOKEN'
@@ -42,7 +42,7 @@ describe('get', () => {
     ])
 
     const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
-    const res = await client.get(DummyApiContent, '/')
+    const res = await client.getList(DummyApiContent, '/')
 
     const gotData = res.data[0]
     expect(gotData.id).toBe('abcdef')
@@ -76,7 +76,7 @@ describe('get', () => {
       const gotQueryParameters = new Map<string, string>()
       const stubServer = await createServer(listener(gotQueryParameters))
       const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
-      await client.get(DummyApiContent, '/', { [key]: param })
+      await client.getList(DummyApiContent, '/', { [key]: param })
 
       expect(gotQueryParameters.get(key)).toBe(param.toString())
 
@@ -91,7 +91,7 @@ describe('get', () => {
     })
 
     const client = new HacoCmsClient(getServerUrl(stubServer), 'WRONG_ACCESS_TOKEN')
-    await expect(client.get(DummyApiContent, '/')).rejects.toThrow()
+    await expect(client.getList(DummyApiContent, '/')).rejects.toThrow()
 
     stubServer.close()
   })
