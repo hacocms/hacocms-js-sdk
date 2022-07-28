@@ -4,8 +4,6 @@ import { JsonValueConverter, JsonType } from './json-utils'
  * common fields of API contents
  */
 export abstract class ApiContent {
-  readonly $tag: string = ''
-
   id: string
   createdAt: Date
   updatedAt: Date

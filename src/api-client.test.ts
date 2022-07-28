@@ -3,9 +3,7 @@ import { AddressInfo } from 'net'
 import { HacoCmsClient as BaseClient } from './api-client'
 import { ApiContent } from './api-content'
 
-class DummyApiContent extends ApiContent {
-  $tag = ''
-}
+class DummyApiContent extends ApiContent {}
 
 // to just publish the protected methods
 class HacoCmsClient extends BaseClient {
