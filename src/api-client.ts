@@ -4,18 +4,6 @@ import { ConstructorFromJson } from './json-utils'
 import { ApiResponse, ApiResponseInJson } from './api-response'
 import { QueryParameters } from './query'
 
-const paramsSerializer = (params: any) => {
-  const concat = (params: URLSearchParams, [key, value]: [string, { toString(): string }]) => {
-    if (value != null) {
-      params.append(key, value.toString())
-    }
-    return params
-  }
-  return Object.entries(params as Partial<QueryParameters>)
-    .reduce(concat, new URLSearchParams())
-    .toString()
-}
-
 /**
  * HacoCMS API client
  */
@@ -45,7 +33,9 @@ export class HacoCmsClient {
    * @returns response body from the API
    */
   protected async get<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, path: string, params: Partial<QueryParameters> = {}) {
-    const res = await this.axios.get<ApiResponseInJson<ApiSchema>>(path, { params, paramsSerializer })
+    const res = await this.axios.get<ApiResponseInJson<ApiSchema>>(path, {
+      params: Object.fromEntries(Object.entries(params).map(([k, v]) => [k, v.toString()]))
+    })
     try {
       return new ApiResponse(res.data, Constructor)
     } catch (error) {
