@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ApiContent } from './api-content'
 import { ConstructorFromJson, JsonType } from './json-utils'
-import { ListApiResponse, ApiResponseInJson, SingleApiResponse } from './api-response'
+import { ListApiResponse, ListApiResponseInJson, SingleApiResponse } from './api-response'
 import { QueryParameters } from './query'
 
 /**
@@ -34,7 +34,7 @@ export class HacoCmsClient {
    * @returns API のレスポンスボディ
    */
   protected async getList<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, query: Partial<QueryParameters> = {}) {
-    const res = await this.axios.get<ApiResponseInJson<ApiSchema>>(endpoint, {
+    const res = await this.axios.get<ListApiResponseInJson<ApiSchema>>(endpoint, {
       params: Object.fromEntries(Object.entries(query).map(([k, v]) => [k, v.toString()])),
     })
     try {

@@ -8,9 +8,9 @@ type ApiMetaResponse = {
 }
 
 /**
- * raw API response
+ * raw list API response
  */
-export type ApiResponseInJson<ApiSchema extends ApiContent> = {
+export type ListApiResponseInJson<ApiSchema extends ApiContent> = {
   meta: ApiMetaResponse
   data: JsonType<ApiSchema>[]
 }
@@ -24,7 +24,7 @@ export class ListApiResponse<ApiSchema extends ApiContent> {
   readonly meta: ApiMetaResponse
   readonly data: ApiSchema[]
 
-  constructor(json: ApiResponseInJson<ApiSchema>, Constructor: ConstructorFromJson<ApiSchema>) {
+  constructor(json: ListApiResponseInJson<ApiSchema>, Constructor: ConstructorFromJson<ApiSchema>) {
     this.meta = json.meta
     this.data = json.data.map((content) => from(content, Constructor))
   }
