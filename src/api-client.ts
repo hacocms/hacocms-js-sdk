@@ -11,7 +11,7 @@ export class HacoCmsClient {
   private readonly axios
 
   /**
-   * @param baseURL API のベース URL `https://{アカウント識別子}-{サブドメイン}.hacocms.com/api/v1/`
+   * @param baseURL API のベース URL `https://{アカウント識別子}-{サブドメイン}.hacocms.com/`
    * @param accessToken プロジェクトの Access-Token
    */
   constructor(baseURL: string, accessToken: string) {
@@ -19,7 +19,7 @@ export class HacoCmsClient {
       Authorization: `Bearer ${accessToken}`,
     }
     this.axios = axios.create({
-      baseURL,
+      baseURL: new URL('/api/v1/', baseURL).toString(),
       headers,
     })
   }
