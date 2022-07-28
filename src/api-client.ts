@@ -60,4 +60,22 @@ export class HacoCmsClient {
       throw new Error(`failed to construct an API response object from JSON: ${JSON.stringify(res.data)}`)
     }
   }
+
+  /**
+   * 指定したコンテンツを取得します。
+   * {@link https://hacocms.com/references/content-api#tag/%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84/paths/~1api~1v1~1%7Bendpoint%7D~1%7Bcontent_id%7D/get}
+   *
+   * @param Constructor コンテンツの JSON オブジェクトを引数とするコンストラクタを持つクラスオブジェクト
+   * @param endpoint リスト形式 API のエンドポイント
+   * @param id コンテンツ ID
+   * @returns コンテンツのオブジェクト（`Constructor` 型）
+   */
+  protected async getContent<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, id: string) {
+    const res = await this.axios.get<JsonType<ApiSchema>>(`${endpoint}/${id}`)
+    try {
+      return new SingleApiResponse(res.data, Constructor)
+    } catch (error) {
+      throw new Error(`failed to construct an API response object from JSON: ${JSON.stringify(res.data)}`)
+    }
+  }
 }
