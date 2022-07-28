@@ -3,7 +3,7 @@ import { JsonValueConverter, JsonType } from './json-utils'
 /**
  * common fields of API contents
  */
-export default abstract class ApiContent {
+export abstract class ApiContent {
   readonly $tag: string = ''
 
   id: string

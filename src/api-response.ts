@@ -1,4 +1,4 @@
-import ApiContent from './api-content'
+import { ApiContent } from './api-content'
 import { ConstructorFromJson, JsonType } from './json-utils'
 
 type ApiMetaResponse = {

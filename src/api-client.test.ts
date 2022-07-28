@@ -1,14 +1,14 @@
 import http from 'http'
 import { AddressInfo } from 'net'
-import * as apiClient from './api-client'
-import ApiContent from './api-content'
+import { HacoCmsClient as BaseClient } from './api-client'
+import { ApiContent } from './api-content'
 
 class DummyApiContent extends ApiContent {
   $tag = ''
 }
 
 // to just publish the protected methods
-class HacoCmsClient extends apiClient.default {
+class HacoCmsClient extends BaseClient {
   get = super.get
 }
 
