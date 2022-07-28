@@ -35,7 +35,7 @@ export class HacoCmsClient {
    */
   protected async getList<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, query: Partial<QueryParameters> = {}) {
     const res = await this.axios.get<ApiResponseInJson<ApiSchema>>(endpoint, {
-      params: Object.fromEntries(Object.entries(query).map(([k, v]) => [k, v.toString()]))
+      params: Object.fromEntries(Object.entries(query).map(([k, v]) => [k, v.toString()])),
     })
     try {
       return new ApiResponse(res.data, Constructor)
