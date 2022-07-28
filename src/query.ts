@@ -1,3 +1,6 @@
+/**
+ * ソートクエリ
+ */
 export class SortQuery {
   #orders: readonly (string | readonly [string, 'desc'])[]
 
@@ -6,9 +9,10 @@ export class SortQuery {
   }
 
   /**
+   * ソートクエリオブジェクトを生成します。
    *
-   * @param orders keys using to sort contents in order by, which ascending keys are putting themselves and descending ones are replacing with [key, 'desc']
-   * @returns a SortQuery object
+   * @param orders コンテンツの比較に使用するフィールドの配列（昇順のフィールドはフィールド名、降順のフィールドは `[フィールド名, 'desc']` または `-フィールド名` とします）
+   * @returns ソートクエリオブジェクト
    */
   static create(...orders: (string | readonly [string, 'desc'])[]) {
     return new SortQuery(orders)
@@ -19,21 +23,25 @@ export class SortQuery {
   }
 }
 
+/**
+ * クエリパラメータ
+ */
 export type QueryParameters = {
+  /** 検索文字列 */
   search: string
 
-  limit: number
-  offset: number
-
-  /**
-   * filter query
-   */
+  /** 検索フィルタークエリ */
   q: string
 
-  /**
-   * sort query
-   */
+  /** 取得件数 */
+  limit: number
+
+  /** 取得開始位置 */
+  offset: number
+
+  /** ソートクエリ */
   s: SortQuery
 
+  /** ステータス */
   status: number
 }
