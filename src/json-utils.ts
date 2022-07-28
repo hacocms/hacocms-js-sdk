@@ -16,15 +16,16 @@ export type JsonType<V> =
 export type ConstructorFromJson<Typed extends object> = { new (json: JsonType<Typed>): Typed }
 
 /**
- * converts a JSON string that represents Date into Date object
- * @param value a string, which can be parsed with Date.parse
- * @returns a Date object that the string represents
+ * 日付文字列を Date オブジェクトに変換します。
+ *
+ * @param value 日付文字列（`new Date(...)` でパースできる形式）
+ * @returns Date オブジェクト
  */
 export const toDate = (value: string) => new Date(value)
 
 /**
- * converts a JSON string that represents Date or null value into Date object or null, respectively
- * @param value a string, which can be parsed as Date, or null
- * @returns a Date object that the string represents unless the value is null, otherwise null
+ * nullable な日付文字列を、日付文字列なら Date オブジェクトに変換し、 `null` なら `null` を返します。
+ * @param value 日付文字列（`new Date(...)` でパースできる形式）または `null`
+ * @returns Date オブジェクトまたは `null`
  */
 export const toNullableDate = (value: string | null) => (value != null ? new Date(value) : null)
