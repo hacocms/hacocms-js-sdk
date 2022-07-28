@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ApiContent } from './api-content'
 import { ConstructorFromJson } from './json-utils'
 import { ApiResponse, ApiResponseInJson } from './api-response'
-import { QueryParameters, paramsSerializer } from './query-builder'
+import { QueryParameters, paramsSerializer } from './query'
 
 /**
  * HacoCMS API client
