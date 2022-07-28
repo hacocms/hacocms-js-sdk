@@ -2,7 +2,6 @@ import http from 'http'
 import { AddressInfo } from 'net'
 import * as apiClient from './api-client'
 import ApiContent from './api-content'
-import { SortQuery } from './query-builder'
 
 class DummyApiContent extends ApiContent {
   $tag = ''
