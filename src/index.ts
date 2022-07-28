@@ -1,5 +1,3 @@
-export * from './api-client'
-export * from './api-content'
-export * from './api-response'
-export * from './json-utils'
-export * from './query'
+export { HacoCmsClient } from './api-client'
+export { ApiContent } from './api-content'
+export { SortQuery } from './query'
