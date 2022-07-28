@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ApiContent } from './api-content'
-import { ConstructorFromJson } from './json-utils'
-import { ListApiResponse, ApiResponseInJson } from './api-response'
+import { ConstructorFromJson, JsonType } from './json-utils'
+import { ListApiResponse, ApiResponseInJson, SingleApiResponse } from './api-response'
 import { QueryParameters } from './query'
 
 /**
@@ -28,10 +28,10 @@ export class HacoCmsClient {
    * リスト形式の API に GET リクエストを送信します。
    * {@link https://hacocms.com/references/content-api#tag/%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84/paths/~1api~1v1~1%7Bendpoint%7D/get}
    *
-   * @param Constructor レスポンスの JSON オブジェクトを引数とするコンストラクタを持つクラスオブジェクト
+   * @param Constructor レスポンスボディの JSON オブジェクトを引数とするコンストラクタを持つクラスオブジェクト
    * @param endpoint API のエンドポイント
    * @param query クエリパラメータ
-   * @returns コンテンツの一覧
+   * @returns API のレスポンスボディ
    */
   protected async getList<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, query: Partial<QueryParameters> = {}) {
     const res = await this.axios.get<ApiResponseInJson<ApiSchema>>(endpoint, {
@@ -39,6 +39,23 @@ export class HacoCmsClient {
     })
     try {
       return new ListApiResponse(res.data, Constructor)
+    } catch (error) {
+      throw new Error(`failed to construct an API response object from JSON: ${JSON.stringify(res.data)}`)
+    }
+  }
+
+  /**
+   * シングル形式の API に GET リクエストを送信します。
+   * {@link https://hacocms.com/references/content-api#tag/%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84/paths/~1api~1v1~1%7Bendpoint%7D/get}
+   *
+   * @param Constructor レスポンスボディの JSON オブジェクトを引数とするコンストラクタを持つクラスオブジェクト
+   * @param endpoint API のエンドポイント
+   * @returns コンテンツのオブジェクト
+   */
+  protected async getSingle<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string) {
+    const res = await this.axios.get<JsonType<ApiSchema>>(endpoint)
+    try {
+      return new SingleApiResponse(res.data, Constructor)
     } catch (error) {
       throw new Error(`failed to construct an API response object from JSON: ${JSON.stringify(res.data)}`)
     }

@@ -29,3 +29,14 @@ export class ListApiResponse<ApiSchema extends ApiContent> {
     this.data = json.data.map((content) => from(content, Constructor))
   }
 }
+
+/**
+ * typed single API response
+ */
+export class SingleApiResponse<ApiSchema extends ApiContent> {
+  readonly data: ApiSchema
+
+  constructor(json: JsonType<ApiSchema>, Constructor: ConstructorFromJson<ApiSchema>) {
+    this.data = from(json, Constructor)
+  }
+}

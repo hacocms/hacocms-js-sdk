@@ -16,7 +16,7 @@ const dummyResponse = JSON.stringify({
   data: [],
 })
 
-describe('get', () => {
+describe('getList', () => {
   test('get public data', async () => {
     const dateStr = '2022-03-08T12:00:00.000+09:00'
     const expectedTime = Date.parse(dateStr)
