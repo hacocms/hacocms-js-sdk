@@ -34,12 +34,19 @@ const spyQueryParams = (params: Map<string, string>) => (req: http.IncomingMessa
   res.end(dummyResponse)
 }
 
+let stubServer: http.Server
+
+afterEach(() => {
+  if (stubServer && stubServer.listening) {
+    stubServer.close()
+  }
+})
 
 describe('getList', () => {
   test('get public data', async () => {
     const dateStr = '2022-03-08T12:00:00.000+09:00'
     const expectedTime = Date.parse(dateStr)
-    const stubServer = await makeStubServer([
+    stubServer = await makeStubServer([
       {
         meta: {
           total: 1,
@@ -76,8 +83,6 @@ describe('getList', () => {
     expect(gotData.updatedAt.getTime()).toBe(expectedTime)
     expect(gotData.publishedAt?.getTime()).toBe(expectedTime)
     expect(gotData.closedAt).toBeNull()
-
-    stubServer.close()
   })
 
   describe('query parameters are appended to query string', () => {
@@ -88,26 +93,22 @@ describe('getList', () => {
       ['s', '-publishedAt,id'],
     ])('%s', async (key, param) => {
       const gotQueryParameters = new Map<string, string>()
-      const stubServer = await createServer(spyQueryParams(gotQueryParameters))
+      stubServer = await createServer(spyQueryParams(gotQueryParameters))
       const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
       await client.getList(DummyApiContent, dummyEndpoint, { [key]: param })
 
       expect(gotQueryParameters.get(key)).toBe(param.toString())
-
-      stubServer.close()
     })
   })
 
   test('throw an error if API returns 401', async () => {
-    const stubServer = await createServer((_, res: http.ServerResponse) => {
+    stubServer = await createServer((_, res: http.ServerResponse) => {
       res.writeHead(401, { 'Content-Type': 'text/plain' })
       res.end('Unauthorized')
     })
 
     const client = new HacoCmsClient(getServerUrl(stubServer), 'WRONG_ACCESS_TOKEN')
     await expect(client.getList(DummyApiContent, dummyEndpoint)).rejects.toThrow()
-
-    stubServer.close()
   })
 })
 
@@ -115,7 +116,7 @@ describe('getSingle', () => {
   test('get single content', async () => {
     const dateStr = '2022-03-08T12:00:00.000+09:00'
     const expectedTime = Date.parse(dateStr)
-    const stubServer = await makeStubServer([
+    stubServer = await makeStubServer([
       {
         id: 'abcdef',
         createdAt: dateStr,
@@ -134,20 +135,16 @@ describe('getSingle', () => {
     expect(res.updatedAt.getTime()).toBe(expectedTime)
     expect(res.publishedAt?.getTime()).toBe(expectedTime)
     expect(res.closedAt).toBeNull()
-
-    stubServer.close()
   })
 
   test('request header has Haco-Project-Draft-Token with the value given by client constructor', async () => {
     const requestHeader = new Map<string, any>()
-    const stubServer = await createServer(spyHeader(requestHeader))
+    stubServer = await createServer(spyHeader(requestHeader))
 
     const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken, dummyProjectDraftToken)
     await client.getSingle(DummyApiContent, dummyEndpoint)
 
     expect(requestHeader.get('Haco-Project-Draft-Token'.toLowerCase())).toBe(dummyProjectDraftToken)
-
-    stubServer.close()
   })
 
 })
@@ -155,26 +152,22 @@ describe('getSingle', () => {
 describe('getListIncludingDraft', () => {
   test('request header has Haco-Project-Draft-Token with the value given by client constructor', async () => {
     const requestHeader = new Map<string, any>()
-    const stubServer = await createServer(spyHeader(requestHeader))
+    stubServer = await createServer(spyHeader(requestHeader))
 
     const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken, dummyProjectDraftToken)
     await client.getListIncludingDraft(DummyApiContent, dummyEndpoint)
 
     expect(requestHeader.get('Haco-Project-Draft-Token'.toLowerCase())).toBe(dummyProjectDraftToken)
-
-    stubServer.close()
   })
 
   test('throw an error if client does not give Project-Draft-Token', async () => {
-    const stubServer = await createServer((_, res: http.ServerResponse) => {
+    stubServer = await createServer((_, res: http.ServerResponse) => {
       res.writeHead(401, { 'Content-Type': 'text/plain' })
       res.end('Unauthorized')
     })
 
     const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken) // do not pass Project-Draft-Token
     await expect(client.getListIncludingDraft(DummyApiContent, dummyEndpoint)).rejects.toThrow(/Project-Draft-Token/i)
-
-    stubServer.close()
   })
 })
 
@@ -183,7 +176,7 @@ describe('getContent', () => {
     const contentId = 'abcdef'
     const dateStr = '2022-03-08T12:00:00.000+09:00'
     const expectedTime = Date.parse(dateStr)
-    const stubServer = await makeStubServer([
+    stubServer = await makeStubServer([
       {
         id: contentId,
         createdAt: dateStr,
@@ -202,33 +195,27 @@ describe('getContent', () => {
     expect(res.updatedAt.getTime()).toBe(expectedTime)
     expect(res.publishedAt?.getTime()).toBe(expectedTime)
     expect(res.closedAt).toBeNull()
-
-    stubServer.close()
   })
 
   test('request header has Haco-Project-Draft-Token with the value given by client constructor', async () => {
     const requestHeader = new Map<string, any>()
-    const stubServer = await createServer(spyHeader(requestHeader))
+    stubServer = await createServer(spyHeader(requestHeader))
 
     const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken, dummyProjectDraftToken)
     await client.getContent(DummyApiContent, dummyEndpoint, 'dummy')
 
     expect(requestHeader.get('Haco-Project-Draft-Token'.toLowerCase())).toBe(dummyProjectDraftToken)
-
-    stubServer.close()
   })
 
   test('draft token is appended to query string', async () => {
     const draftToken = 'DUMMY_DRAFT_TOKEN'
 
     const gotQueryParameters = new Map<string, string>()
-    const stubServer = await createServer(spyQueryParams(gotQueryParameters))
+    stubServer = await createServer(spyQueryParams(gotQueryParameters))
     const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
     await client.getContent(DummyApiContent, dummyEndpoint, 'dummy', draftToken)
 
     expect(gotQueryParameters.get('draft')).toBe(draftToken)
-
-    stubServer.close()
   })
 })
 
