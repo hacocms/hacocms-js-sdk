@@ -8,10 +8,13 @@ class DummyApiContent extends ApiContent {}
 // to just publish the protected methods
 class HacoCmsClient extends BaseClient {
   getList = super.getList
+  getListIncludingDraft = super.getListIncludingDraft
   getSingle = super.getSingle
+  getContent = super.getContent
 }
 
 const dummyAccessToken = 'DUMMY_ACCESS_TOKEN'
+const dummyProjectDraftToken = 'DUMMY_PROJECT_DRAFT_TOKEN'
 const dummyEndpoint = '/dummy'
 const dummyResponse = JSON.stringify({
   meta: { total: 0, offset: 0, limit: 100 },
@@ -35,7 +38,7 @@ describe('getList', () => {
             createdAt: dateStr,
             updatedAt: dateStr,
             publishedAt: dateStr,
-            closedAt: dateStr,
+            closedAt: null,
           },
         ],
       },
@@ -44,22 +47,26 @@ describe('getList', () => {
     const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
     const res = await client.getList(DummyApiContent, dummyEndpoint)
 
-    const gotData = res.data[0]
-    expect(gotData.id).toBe('abcdef')
-    expect(gotData.createdAt.getTime()).toBe(expectedTime)
-    expect(gotData.updatedAt.getTime()).toBe(expectedTime)
-    expect(gotData.publishedAt?.getTime()).toBe(expectedTime)
-    expect(gotData.closedAt?.getTime()).toBe(expectedTime)
+    expect(res).toHaveProperty('meta')
+    expect(res).toHaveProperty('data')
 
     const gotMeta = res.meta
     expect(gotMeta.total).toBe(1)
     expect(gotMeta.offset).toBe(0)
     expect(gotMeta.limit).toBeGreaterThan(0)
 
+    const gotData = res.data[0]
+    expect(gotData).toBeInstanceOf(DummyApiContent)
+    expect(gotData.id).toBe('abcdef')
+    expect(gotData.createdAt.getTime()).toBe(expectedTime)
+    expect(gotData.updatedAt.getTime()).toBe(expectedTime)
+    expect(gotData.publishedAt?.getTime()).toBe(expectedTime)
+    expect(gotData.closedAt).toBeNull()
+
     stubServer.close()
   })
 
-  describe('with query parameters', () => {
+  describe('query parameters are appended to query string', () => {
     const listener = (params: Map<string, string>) => (req: http.IncomingMessage, res: http.ServerResponse) => {
       new URL(req.url!, 'http://localhost/').searchParams.forEach((value, key) => {
         params.set(key, value)
@@ -113,6 +120,65 @@ describe('getSingle', () => {
 
     const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
     const res = await client.getSingle(DummyApiContent, dummyEndpoint)
+
+    expect(res).toBeInstanceOf(DummyApiContent)
+    expect(res.id).toBe('abcdef')
+    expect(res.createdAt.getTime()).toBe(expectedTime)
+    expect(res.updatedAt.getTime()).toBe(expectedTime)
+    expect(res.publishedAt?.getTime()).toBe(expectedTime)
+    expect(res.closedAt).toBeNull()
+
+    stubServer.close()
+  })
+})
+
+describe('getListIncludingDraft', () => {
+  test('request header has Haco-Project-Draft-Token with the value given by client constructor', async () => {
+    let requestHeader: http.IncomingHttpHeaders = {}
+    const spyHeader = (req: http.IncomingMessage, res: http.ServerResponse) => {
+      requestHeader = req.headers
+      res.end(dummyResponse)
+    }
+    const stubServer = await createServer(spyHeader)
+
+    const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken, dummyProjectDraftToken)
+    await client.getListIncludingDraft(DummyApiContent, dummyEndpoint)
+
+    expect(requestHeader).toHaveProperty('Haco-Project-Draft-Token'.toLowerCase(), dummyProjectDraftToken)
+
+    stubServer.close()
+  })
+
+  test('throw an error if client does not give Project-Draft-Token', async () => {
+    const stubServer = await createServer((_, res: http.ServerResponse) => {
+      res.writeHead(401, { 'Content-Type': 'text/plain' })
+      res.end('Unauthorized')
+    })
+
+    const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken) // do not pass Project-Draft-Token
+    await expect(client.getListIncludingDraft(DummyApiContent, dummyEndpoint)).rejects.toThrow(/Project-Draft-Token/i)
+
+    stubServer.close()
+  })
+})
+
+describe('getContent', () => {
+  test('get specified content', async () => {
+    const contentId = 'abcdef'
+    const dateStr = '2022-03-08T12:00:00.000+09:00'
+    const expectedTime = Date.parse(dateStr)
+    const stubServer = await makeStubServer([
+      {
+        id: contentId,
+        createdAt: dateStr,
+        updatedAt: dateStr,
+        publishedAt: dateStr,
+        closedAt: null,
+      },
+    ])
+
+    const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
+    const res = await client.getContent(DummyApiContent, dummyEndpoint, contentId)
 
     expect(res).toBeInstanceOf(DummyApiContent)
     expect(res.id).toBe('abcdef')

@@ -1,9 +1,10 @@
 import { SortQuery } from './query'
 
-describe('sort', () => {
+describe('build sort query', () => {
   test.each([
     [[], ''],
     [['createdAt'], 'createdAt'],
+    [['-createdAt'], '-createdAt'],
     [[['updatedAt', 'desc'] as const], '-updatedAt'],
     [[['publishedAt', 'desc'] as const, 'id'], '-publishedAt,id'],
   ])('%p', (args, want) => {
