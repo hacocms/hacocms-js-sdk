@@ -21,6 +21,13 @@ const dummyResponse = JSON.stringify({
   data: [],
 })
 
+const spyHeader = (requestHeader: Map<string, any>) => (req: http.IncomingMessage, res: http.ServerResponse) => {
+  for (const x in req.headers) {
+    requestHeader.set(x, req.headers[x])
+  }
+  res.end(dummyResponse)
+}
+
 describe('getList', () => {
   test('get public data', async () => {
     const dateStr = '2022-03-08T12:00:00.000+09:00'
@@ -134,17 +141,13 @@ describe('getSingle', () => {
 
 describe('getListIncludingDraft', () => {
   test('request header has Haco-Project-Draft-Token with the value given by client constructor', async () => {
-    let requestHeader: http.IncomingHttpHeaders = {}
-    const spyHeader = (req: http.IncomingMessage, res: http.ServerResponse) => {
-      requestHeader = req.headers
-      res.end(dummyResponse)
-    }
-    const stubServer = await createServer(spyHeader)
+    const requestHeader = new Map<string, any>()
+    const stubServer = await createServer(spyHeader(requestHeader))
 
     const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken, dummyProjectDraftToken)
     await client.getListIncludingDraft(DummyApiContent, dummyEndpoint)
 
-    expect(requestHeader).toHaveProperty('Haco-Project-Draft-Token'.toLowerCase(), dummyProjectDraftToken)
+    expect(requestHeader.get('Haco-Project-Draft-Token'.toLowerCase())).toBe(dummyProjectDraftToken)
 
     stubServer.close()
   })
