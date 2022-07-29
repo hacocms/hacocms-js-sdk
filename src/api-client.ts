@@ -52,11 +52,7 @@ export class HacoCmsClient {
     const res = await this.axios.get<ListApiResponseInJson<ApiSchema>>(endpoint, {
       params: query,
     })
-    try {
-      return new ListApiResponse(res.data, Constructor)
-    } catch (error) {
-      throw new Error(`failed to construct an API response object from JSON: ${JSON.stringify(res.data)}`)
-    }
+    return new ListApiResponse(res.data, Constructor)
   }
 
   /**
@@ -76,11 +72,7 @@ export class HacoCmsClient {
     const res = await this.axiosDraft.get<ListApiResponseInJson<ApiSchema>>(endpoint, {
       params: query,
     })
-    try {
-      return new ListApiResponse(res.data, Constructor)
-    } catch (error) {
-      throw new Error(`failed to construct an API response object from JSON: ${JSON.stringify(res.data)}`)
-    }
+    return new ListApiResponse(res.data, Constructor)
   }
 
   /**
@@ -94,11 +86,7 @@ export class HacoCmsClient {
   protected async getSingle<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string) {
     const axios = this.axiosDraft ?? this.axios
     const res = await axios.get<JsonType<ApiSchema>>(endpoint)
-    try {
-      return new Constructor(res.data)
-    } catch (error) {
-      throw new Error(`failed to construct an API response object from JSON: ${JSON.stringify(res.data)}`)
-    }
+    return new Constructor(res.data)
   }
 
   /**
@@ -115,10 +103,6 @@ export class HacoCmsClient {
     const axios = this.axiosDraft ?? this.axios
     const params = draftToken ? { draft: draftToken } : {}
     const res = await axios.get<JsonType<ApiSchema>>(`${endpoint}/${id}`, { params })
-    try {
-      return new Constructor(res.data)
-    } catch (error) {
-      throw new Error(`failed to construct an API response object from JSON: ${JSON.stringify(res.data)}`)
-    }
+    return new Constructor(res.data)
   }
 }
