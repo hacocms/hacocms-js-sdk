@@ -8,9 +8,11 @@ class DummyApiContent extends ApiContent {}
 // to just publish the protected methods
 class HacoCmsClient extends BaseClient {
   getList = super.getList
+  getSingle = super.getSingle
 }
 
 const dummyAccessToken = 'DUMMY_ACCESS_TOKEN'
+const dummyEndpoint = '/dummy'
 const dummyResponse = JSON.stringify({
   meta: { total: 0, offset: 0, limit: 100 },
   data: [],
@@ -40,7 +42,7 @@ describe('getList', () => {
     ])
 
     const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
-    const res = await client.getList(DummyApiContent, '/')
+    const res = await client.getList(DummyApiContent, dummyEndpoint)
 
     const gotData = res.data[0]
     expect(gotData.id).toBe('abcdef')
@@ -74,7 +76,7 @@ describe('getList', () => {
       const gotQueryParameters = new Map<string, string>()
       const stubServer = await createServer(listener(gotQueryParameters))
       const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
-      await client.getList(DummyApiContent, '/', { [key]: param })
+      await client.getList(DummyApiContent, dummyEndpoint, { [key]: param })
 
       expect(gotQueryParameters.get(key)).toBe(param.toString())
 
@@ -89,7 +91,35 @@ describe('getList', () => {
     })
 
     const client = new HacoCmsClient(getServerUrl(stubServer), 'WRONG_ACCESS_TOKEN')
-    await expect(client.getList(DummyApiContent, '/')).rejects.toThrow()
+    await expect(client.getList(DummyApiContent, dummyEndpoint)).rejects.toThrow()
+
+    stubServer.close()
+  })
+})
+
+describe('getSingle', () => {
+  test('get single content', async () => {
+    const dateStr = '2022-03-08T12:00:00.000+09:00'
+    const expectedTime = Date.parse(dateStr)
+    const stubServer = await makeStubServer([
+      {
+        id: 'abcdef',
+        createdAt: dateStr,
+        updatedAt: dateStr,
+        publishedAt: dateStr,
+        closedAt: null,
+      },
+    ])
+
+    const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
+    const res = await client.getSingle(DummyApiContent, dummyEndpoint)
+
+    expect(res).toBeInstanceOf(DummyApiContent)
+    expect(res.id).toBe('abcdef')
+    expect(res.createdAt.getTime()).toBe(expectedTime)
+    expect(res.updatedAt.getTime()).toBe(expectedTime)
+    expect(res.publishedAt?.getTime()).toBe(expectedTime)
+    expect(res.closedAt).toBeNull()
 
     stubServer.close()
   })
