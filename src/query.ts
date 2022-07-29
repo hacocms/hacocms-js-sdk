@@ -9,6 +9,16 @@ export class SortQuery {
   }
 
   /**
+   * ソートクエリ文字列を組み立てます。
+   *
+   * @param orders コンテンツの比較に使用するフィールドの配列（昇順のフィールドはフィールド名、降順のフィールドは `[フィールド名, 'desc']` または `-フィールド名` とします）
+   * @returns ソートクエリ文字列
+   */
+  static build(...orders: (string | readonly [string, 'desc'])[]) {
+    return new SortQuery(orders).toString()
+  }
+
+  /**
    * ソートクエリオブジェクトを生成します。
    *
    * @param orders コンテンツの比較に使用するフィールドの配列（昇順のフィールドはフィールド名、降順のフィールドは `[フィールド名, 'desc']` または `-フィールド名` とします）
@@ -40,7 +50,7 @@ export type QueryParameters = {
   offset: number
 
   /** ソートクエリ */
-  s: SortQuery
+  s: string
 
   /** ステータス */
   status: number

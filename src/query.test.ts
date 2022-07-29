@@ -7,6 +7,6 @@ describe('sort', () => {
     [[['updatedAt', 'desc'] as const], '-updatedAt'],
     [[['publishedAt', 'desc'] as const, 'id'], '-publishedAt,id'],
   ])('%p', (args, want) => {
-    expect(SortQuery.create(...args).toString()).toBe(want)
+    expect(SortQuery.build(...args)).toBe(want)
   })
 })
