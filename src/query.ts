@@ -18,16 +18,6 @@ export class SortQuery {
     return new SortQuery(orders).toString()
   }
 
-  /**
-   * ソートクエリオブジェクトを生成します。
-   *
-   * @param orders コンテンツの比較に使用するフィールドの配列（昇順のフィールドはフィールド名、降順のフィールドは `[フィールド名, 'desc']` または `-フィールド名` とします）
-   * @returns ソートクエリオブジェクト
-   */
-  static create(...orders: (string | readonly [string, 'desc'])[]) {
-    return new SortQuery(orders)
-  }
-
   toString() {
     return this.#orders.map((order) => (order instanceof Array ? `-${order[0]}` : order)).join(',')
   }
