@@ -27,6 +27,13 @@ const spyHeader = (requestHeader: Map<string, any>) => (req: http.IncomingMessag
   }
   res.end(dummyResponse)
 }
+const spyQueryParams = (params: Map<string, string>) => (req: http.IncomingMessage, res: http.ServerResponse) => {
+  new URL(req.url!, 'http://localhost/').searchParams.forEach((value, key) => {
+    params.set(key, value)
+  })
+  res.end(dummyResponse)
+}
+
 
 describe('getList', () => {
   test('get public data', async () => {
@@ -74,13 +81,6 @@ describe('getList', () => {
   })
 
   describe('query parameters are appended to query string', () => {
-    const listener = (params: Map<string, string>) => (req: http.IncomingMessage, res: http.ServerResponse) => {
-      new URL(req.url!, 'http://localhost/').searchParams.forEach((value, key) => {
-        params.set(key, value)
-      })
-      res.end(dummyResponse)
-    }
-
     test.each([
       ['limit', 50],
       ['offset', 100],
@@ -88,7 +88,7 @@ describe('getList', () => {
       ['s', '-publishedAt,id'],
     ])('%s', async (key, param) => {
       const gotQueryParameters = new Map<string, string>()
-      const stubServer = await createServer(listener(gotQueryParameters))
+      const stubServer = await createServer(spyQueryParams(gotQueryParameters))
       const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
       await client.getList(DummyApiContent, dummyEndpoint, { [key]: param })
 
@@ -137,6 +137,19 @@ describe('getSingle', () => {
 
     stubServer.close()
   })
+
+  test('request header has Haco-Project-Draft-Token with the value given by client constructor', async () => {
+    const requestHeader = new Map<string, any>()
+    const stubServer = await createServer(spyHeader(requestHeader))
+
+    const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken, dummyProjectDraftToken)
+    await client.getSingle(DummyApiContent, dummyEndpoint)
+
+    expect(requestHeader.get('Haco-Project-Draft-Token'.toLowerCase())).toBe(dummyProjectDraftToken)
+
+    stubServer.close()
+  })
+
 })
 
 describe('getListIncludingDraft', () => {
@@ -189,6 +202,31 @@ describe('getContent', () => {
     expect(res.updatedAt.getTime()).toBe(expectedTime)
     expect(res.publishedAt?.getTime()).toBe(expectedTime)
     expect(res.closedAt).toBeNull()
+
+    stubServer.close()
+  })
+
+  test('request header has Haco-Project-Draft-Token with the value given by client constructor', async () => {
+    const requestHeader = new Map<string, any>()
+    const stubServer = await createServer(spyHeader(requestHeader))
+
+    const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken, dummyProjectDraftToken)
+    await client.getContent(DummyApiContent, dummyEndpoint, 'dummy')
+
+    expect(requestHeader.get('Haco-Project-Draft-Token'.toLowerCase())).toBe(dummyProjectDraftToken)
+
+    stubServer.close()
+  })
+
+  test('draft token is appended to query string', async () => {
+    const draftToken = 'DUMMY_DRAFT_TOKEN'
+
+    const gotQueryParameters = new Map<string, string>()
+    const stubServer = await createServer(spyQueryParams(gotQueryParameters))
+    const client = new HacoCmsClient(getServerUrl(stubServer), dummyAccessToken)
+    await client.getContent(DummyApiContent, dummyEndpoint, 'dummy', draftToken)
+
+    expect(gotQueryParameters.get('draft')).toBe(draftToken)
 
     stubServer.close()
   })
