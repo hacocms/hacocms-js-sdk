@@ -1,7 +1,7 @@
 {
   "name": "hacocms-js-sdk",
   "version": "0.1.0",
-  "description": "JavaScript/TypeScript SDK for hacoCMS",
+  "description": "hacoCMS SDK for JavaScript/TypeScript",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
