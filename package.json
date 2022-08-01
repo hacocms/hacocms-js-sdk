@@ -20,7 +20,7 @@
     "url": "git+https://github.com/hacocms/hacocms-js-sdk.git"
   },
   "author": "Seesaa Inc.",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/hacocms/hacocms-js-sdk/issues"
   },

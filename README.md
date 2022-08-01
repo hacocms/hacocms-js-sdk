@@ -72,4 +72,4 @@ console.log(draft.title)
 
 ## ライセンス
 
-(TBD)
+MIT License
