@@ -1,17 +1,9 @@
 import http from 'http'
 import { AddressInfo } from 'net'
-import { HacoCmsClient as BaseClient } from './api-client'
+import { HacoCmsClient } from './api-client'
 import { ApiContent } from './api-content'
 
 class DummyApiContent extends ApiContent {}
-
-// to just publish the protected methods
-class HacoCmsClient extends BaseClient {
-  getList = super.getList
-  getListIncludingDraft = super.getListIncludingDraft
-  getSingle = super.getSingle
-  getContent = super.getContent
-}
 
 const dummyAccessToken = 'DUMMY_ACCESS_TOKEN'
 const dummyProjectDraftToken = 'DUMMY_PROJECT_DRAFT_TOKEN'

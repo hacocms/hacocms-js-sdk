@@ -48,7 +48,7 @@ export class HacoCmsClient {
    * @param query クエリパラメータ
    * @returns API のレスポンスボディ
    */
-  protected async getList<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, query: Partial<QueryParameters> = {}) {
+  async getList<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, query: Partial<QueryParameters> = {}) {
     const res = await this.axios.get<ListApiResponseInJson<ApiSchema>>(endpoint, {
       params: query,
     })
@@ -64,7 +64,7 @@ export class HacoCmsClient {
    * @param query クエリパラメータ
    * @returns API のレスポンスボディ
    */
-  protected async getListIncludingDraft<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, query: Partial<QueryParameters> = {}) {
+  async getListIncludingDraft<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, query: Partial<QueryParameters> = {}) {
     if (!this.axiosDraft) {
       throw new Error(`need Project-Draft-Token to get draft contents`)
     }
@@ -83,7 +83,7 @@ export class HacoCmsClient {
    * @param endpoint シングル形式 API のエンドポイント
    * @returns コンテンツのオブジェクト（`Constructor` 型）
    */
-  protected async getSingle<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string) {
+  async getSingle<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string) {
     const axios = this.axiosDraft ?? this.axios
     const res = await axios.get<JsonType<ApiSchema>>(endpoint)
     return new Constructor(res.data)
@@ -99,7 +99,7 @@ export class HacoCmsClient {
    * @param draftToken _(optional)_ 未公開コンテンツを取得するためのトークン
    * @returns コンテンツのオブジェクト（`Constructor` 型）
    */
-  protected async getContent<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, id: string, draftToken?: string) {
+  async getContent<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, id: string, draftToken?: string) {
     const axios = this.axiosDraft ?? this.axios
     const params = draftToken ? { draft: draftToken } : {}
     const res = await axios.get<JsonType<ApiSchema>>(`${endpoint}/${id}`, { params })
