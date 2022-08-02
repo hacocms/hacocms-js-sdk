@@ -138,7 +138,6 @@ describe('getSingle', () => {
 
     expect(requestHeader.get('Haco-Project-Draft-Token'.toLowerCase())).toBe(dummyProjectDraftToken)
   })
-
 })
 
 describe('getListIncludingDraft', () => {
