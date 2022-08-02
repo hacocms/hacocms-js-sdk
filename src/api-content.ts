@@ -20,7 +20,7 @@ export abstract class ApiContent {
   closedAt: Date | null
 
   /**
-   * @param json コンテンツの JSON オブジェクト
+   * @param json コンテンツ JSON
    */
   constructor(json: JsonType<ApiContent>) {
     this.id = json.id
