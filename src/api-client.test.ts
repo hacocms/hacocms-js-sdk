@@ -1,7 +1,7 @@
 import http from 'http'
 import { AddressInfo } from 'net'
-import { HacoCmsClient } from './api-client'
-import { ApiContent } from './api-content'
+import { HacoCmsClient } from './api-client.js'
+import { ApiContent } from './api-content.js'
 
 class DummyApiContent extends ApiContent {}
 

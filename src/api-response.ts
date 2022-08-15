@@ -1,5 +1,5 @@
-import { ApiContent } from './api-content'
-import { ConstructorFromJson, JsonType } from './json-utils'
+import { ApiContent } from './api-content.js'
+import { ConstructorFromJson, JsonType } from './json-utils.js'
 
 type ApiMetaResponse = {
   total: number
