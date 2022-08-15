@@ -2,11 +2,12 @@
   "name": "hacocms-js-sdk",
   "version": "0.1.0",
   "description": "hacoCMS SDK for JavaScript/TypeScript",
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "clean": "rimraf dist",
-    "test": "jest",
+    "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' npx jest",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint src/**",
     "lint:prettier": "prettier --check .",

@@ -1,4 +1,4 @@
-export { HacoCmsClient } from './api-client'
-export { ApiContent } from './api-content'
-export { SortQuery } from './query'
-export { JsonType, toDate, toNullableDate } from './json-utils'
+export { HacoCmsClient } from './api-client.js'
+export { ApiContent } from './api-content.js'
+export { SortQuery } from './query.js'
+export { JsonType, toDate, toNullableDate } from './json-utils.js'

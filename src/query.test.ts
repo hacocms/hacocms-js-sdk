@@ -1,4 +1,4 @@
-import { SortQuery } from './query'
+import { SortQuery } from './query.js'
 
 describe('build sort query', () => {
   test.each([
