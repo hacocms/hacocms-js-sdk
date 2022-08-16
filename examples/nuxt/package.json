@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "core-js": "^3.19.3",
-    "hacocms-js-sdk": "^0.1.0",
+    "hacocms-js-sdk": "^0.2.0",
     "nuxt": "^2.15.8",
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14",
