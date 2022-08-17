@@ -5,9 +5,10 @@ on:
 
 jobs:
   setup:
-    matrix:
-      os: [ubuntu-latest]
-      node: [16]
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [16]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/setup-node@v3
@@ -23,9 +24,10 @@ jobs:
 
   build:
     needs: setup
-    matrix:
-      os: [ubuntu-latest]
-      node: [16]
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [16]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/setup-node@v3
@@ -41,9 +43,10 @@ jobs:
 
   test:
     needs: build
-    matrix:
-      os: [ubuntu-latest]
-      node: [16]
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [16]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/setup-node@v3
