@@ -1,0 +1,76 @@
+name: build, test, lint
+
+on:
+  - push
+
+jobs:
+  setup:
+    matrix:
+      os: [ubuntu-latest]
+      node: [16]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/checkout@v3
+      - run: npm ci
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
+
+  build:
+    needs: setup
+    matrix:
+      os: [ubuntu-latest]
+      node: [16]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
+      - run: npm run build
+
+  test:
+    needs: build
+    matrix:
+      os: [ubuntu-latest]
+      node: [16]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
+      - run: npm test
+
+  lint:
+    needs: build
+    matrix:
+      os: [ubuntu-latest]
+      node: [16]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
+      - run: npm run lint
