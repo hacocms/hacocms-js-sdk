@@ -46,7 +46,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14, 16, 18]
+        node: [14, 16]
+        experimental: [false]
+        include:
+          - os: ubuntu-latest
+            node: 18
+            experimental: true
+    continue-on-error: ${{ matrix.experimental }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/setup-node@v3
