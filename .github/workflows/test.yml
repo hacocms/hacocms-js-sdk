@@ -15,11 +15,17 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/package-lock.json')) }}
       - run: npm ci
       - uses: actions/cache@v3
         with:
           path: |
             node_modules
+            dist
           key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
 
   build:
@@ -38,6 +44,7 @@ jobs:
         with:
           path: |
             node_modules
+            dist
           key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
       - run: npm run build
 
@@ -63,6 +70,7 @@ jobs:
         with:
           path: |
             node_modules
+            dist
           key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
       - run: npm test
 
@@ -82,5 +90,6 @@ jobs:
         with:
           path: |
             node_modules
+            dist
           key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
       - run: npm run lint
