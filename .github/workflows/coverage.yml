@@ -11,6 +11,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - name: Wait for tests to succeed
         uses: lewagon/wait-on-check-action@v1.0.0
         with:
@@ -18,10 +19,11 @@ jobs:
           check-name: 'test (ubuntu-latest, 16, false)'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 3
-      - uses: actions/checkout@v1
       - uses: actions/cache@v3
         with:
           path: |
             report.json
           key: ${{ matrix.os }}-node-v${{ matrix.node }}-coverage-${{ github.event.pull_request.head.sha }}
       - uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          skip-step: all
