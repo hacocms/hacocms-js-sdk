@@ -79,7 +79,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14, 16, 18]
+        node: [16]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/setup-node@v3
