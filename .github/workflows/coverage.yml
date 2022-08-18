@@ -23,7 +23,7 @@ jobs:
         with:
           path: |
             report.json
-          key: ${{ matrix.os }}-node-v${{ matrix.node }}-coverage-${{ github.event.pull_request.head.sha }}
+          key: ubuntu-latest-node-v16-coverage-${{ github.event.pull_request.head.sha }}
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           skip-step: all
