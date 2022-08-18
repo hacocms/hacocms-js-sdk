@@ -75,7 +75,7 @@ jobs:
       - run: npm test
 
   lint:
-    needs: build
+    needs: setup
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -90,6 +90,5 @@ jobs:
         with:
           path: |
             node_modules
-            dist
-          key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/package-lock.json')) }}
       - run: npm run lint
