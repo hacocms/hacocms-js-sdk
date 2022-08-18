@@ -212,7 +212,7 @@ describe('getContent', () => {
 
 async function createServer(listener: http.RequestListener) {
   const server = http.createServer(listener)
-  server.listen(undefined, 'localhost')
+  server.listen(undefined, '127.0.0.1')
   while (!server.address()) {
     await new Promise((resolve) => setTimeout(resolve, 10))
   }
