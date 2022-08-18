@@ -239,6 +239,7 @@ async function makeStubServer(responses: readonly unknown[]) {
 
 function getServerUrl(server: http.Server) {
   const address = server.address()
+  console.log(address)
   if (address == null) {
     throw new Error('server.address() returns null')
   }
