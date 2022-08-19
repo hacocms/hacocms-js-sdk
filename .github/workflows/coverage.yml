@@ -12,19 +12,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Wait for tests to succeed
-        continue-on-error: true
-        uses: lewagon/wait-on-check-action@v1.1.2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          check-name: 'test (ubuntu-latest, 16, false)'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 3
-      - uses: actions/cache@v3
-        with:
-          path: |
-            report.json
-          key: ubuntu-latest-node-v16-coverage-${{ github.event.pull_request.head.sha }}
       - uses: ArtiomTr/jest-coverage-report-action@v2
-        with:
-          skip-step: all
