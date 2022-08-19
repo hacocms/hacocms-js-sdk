@@ -43,7 +43,7 @@ class ExampleContent extends ApiContent {
 }
 
 // コンテンツ一覧を取得
-const res = client.getList(ExampleContent, '/example', {
+const res = await client.getList(ExampleContent, '/example', {
   s: SortQuery.build(['createdAt', 'desc']), // 作成日時の降順
 })
 for (const content of res.data) {
@@ -52,16 +52,16 @@ for (const content of res.data) {
 
 // 特定のコンテンツを取得
 const contentId = 'CONTENT_ID' // コンテンツ ID
-const content = client.getContent(ExampleContent, '/example', contentId)
+const content = await client.getContent(ExampleContent, '/example', contentId)
 console.log(content.title)
 
 // シングル形式の API コンテンツを取得
-const single = client.getSingle(ExampleContent, '/single')
+const single = await client.getSingle(ExampleContent, '/single')
 console.log(single.title)
 
 // 下書きを含めたコンテンツ一覧を取得
 // ※ HacoCmsClient のコンストラクタに Project-Draft-Token を渡しておく必要があります。
-const all = client.getListIncludingDraft(ExampleContent, '/example', {
+const all = await client.getListIncludingDraft(ExampleContent, '/example', {
   s: SortQuery.build('-updatedAt'), // 更新日時の降順
 })
 for (const content of all.data) {
@@ -70,7 +70,7 @@ for (const content of all.data) {
 
 // 下書きのコンテンツを取得
 const draftToken = 'DRAFT_TOKEN' // 取得するコンテンツの Draft-Token
-const draft = client.getContent(ExampleContent, '/example', contentId, draftToken)
+const draft = await client.getContent(ExampleContent, '/example', contentId, draftToken)
 console.log(draft.title)
 ```
 
