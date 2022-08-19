@@ -1,5 +1,9 @@
 # hacoCMS JavaScript/TypeScript SDK
 
+[![build, test, lint](https://github.com/hacocms/hacocms-js-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/hacocms/hacocms-js-sdk/actions/workflows/test.yml)
+[![npm version](https://badge.fury.io/js/hacocms-js-sdk.svg)](https://badge.fury.io/js/hacocms-js-sdk)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 [hacoCMS](https://hacocms.com/) の JavaScript/TypeScript 用 API クライアントライブラリです。
 
 ## インストール
