@@ -49,7 +49,7 @@ jobs:
       - run: npm run build
 
   test:
-    needs: build
+    needs: setup
     strategy:
       matrix:
         os: [ubuntu-latest]
