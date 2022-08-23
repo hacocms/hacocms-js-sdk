@@ -39,17 +39,34 @@ export default {
 
   generate: {
     routes: async () => {
-      const YOUR_DOMAIN = 'SUBDOMAIN'
-      const YOUR_ACCESS_TOKEN = 'ACCESS_TOKEN'
-      const client = new HacoCmsClient(`https://${YOUR_DOMAIN}.hacocms.com`, YOUR_ACCESS_TOKEN)
-      const entries = (await client.getList(Object, '/entries', { s: SortQuery.build(['updatedAt', 'desc']) })).data
+      // (1) プロジェクト基本設定画面のサブドメインに置き換えてください。
+      const PROJECT_SUBDOMAIN = 'SUBDOMAIN'
+
+      // (2) プロジェクトの Access-Token に置き換えてください。
+      const PROJECT_ACCESS_TOKEN = 'ACCESS_TOKEN'
+
+      // API の利用に必要なクライアントを生成します。
+      const client = new HacoCmsClient(`https://${PROJECT_SUBDOMAIN}.hacocms.com`, PROJECT_ACCESS_TOKEN)
+
+      // hacoCMS の記事 API /entries に GET リクエストを送信し、記事一覧の入ったレスポンスを受け取ります。
+      const res = await client.getList(Object, '/entries', { s: SortQuery.build(['updatedAt', 'desc']) })
+
+      // 記事の一覧は res.data に入っているので取り出します。
+      const entries = res.data
+
+      // 取得した記事の一覧を基に必要なページを列挙します。
       return [
+        // トップページ
         {
+          // 生成するページのパス
           route: '/',
+          // そのページで使用するデータ
           payload: {
             entries,
           },
         },
+
+        // 個別記事ページ
         ...entries.map((entry) => ({
           route: `/${entry.id}`,
           payload: {
