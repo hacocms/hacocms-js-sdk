@@ -19,14 +19,14 @@ yarn add hacocms-js-sdk
 ## 使い方
 
 ```js
-const {
+import {
   HacoCmsClient, // API クライアント
   ApiContent, // API スキーマの基底クラス
   SortQuery, // ソートクエリビルダ
-} = require('hacocms-js-sdk')
+} from 'hacocms-js-sdk'
 
 const client = new HacoCmsClient(
-  'https://{アカウント識別子}-{サブドメイン}.hacocms.com', // API にアクセスする URL
+  'https://{サブドメイン}.hacocms.com', // API にアクセスする URL
   'ACCESS_TOKEN', // プロジェクトの Access-Token
   'PROJECT_DRAFT_TOKEN' // オプション：プロジェクトの Project-Draft-Token
 )
