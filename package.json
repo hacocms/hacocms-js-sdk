@@ -5,7 +5,8 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npm run build:esm",
+    "build:esm": "tsc -p tsconfig.esm.json",
     "clean": "rimraf dist",
     "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' npx jest",
     "lint": "npm run lint:eslint && npm run lint:prettier",
