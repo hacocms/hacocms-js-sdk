@@ -4,6 +4,7 @@
   "extensionsToTreatAsEsm": [".ts"],
   "globals": {
     "ts-jest": {
+      "tsconfig": "tsconfig.test.json",
       "useESM": true
     }
   },
