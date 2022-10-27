@@ -4,6 +4,6 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
-    "outDir": "dist"
+    "outDir": "dist/esm"
   }
 }
