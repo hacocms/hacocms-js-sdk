@@ -2,12 +2,6 @@
  * ソートクエリ
  */
 export class SortQuery {
-  #orders: readonly (string | readonly [string, 'desc'])[]
-
-  private constructor(orders: (string | readonly [string, 'desc'])[]) {
-    this.#orders = orders
-  }
-
   /**
    * ソートクエリ文字列を組み立てます。
    *
@@ -15,11 +9,7 @@ export class SortQuery {
    * @returns ソートクエリ文字列
    */
   static build(...orders: (string | readonly [string, 'desc'])[]) {
-    return new SortQuery(orders).toString()
-  }
-
-  toString() {
-    return this.#orders.map((order) => (order instanceof Array ? `-${order[0]}` : order)).join(',')
+    return orders.map((order) => (order instanceof Array ? `-${order[0]}` : order)).join(',')
   }
 }
 

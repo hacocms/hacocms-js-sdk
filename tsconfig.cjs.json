@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "target": "ES5",
     "module": "CommonJS",
     "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
     "outDir": "dist/cjs"
