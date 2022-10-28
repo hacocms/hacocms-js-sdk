@@ -1,8 +1,10 @@
-import axios from 'axios'
 import { ApiContent } from './api-content.js'
-import { ConstructorFromJson, JsonType } from './json-utils.js'
-import { ListApiResponse, ListApiResponseInJson } from './api-response.js'
+import { ListApiResponse } from './api-response.js'
+import { ConstructorFromJson } from './json-utils.js'
 import { QueryParameters } from './query.js'
+
+// workaround for https://github.com/axios/axios/issues/5011
+const axios = require('axios').default
 
 /**
  * hacoCMS の API クライアント
@@ -49,7 +51,8 @@ export class HacoCmsClient {
    * @returns API のレスポンスボディ
    */
   async getList<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, query: Partial<QueryParameters> = {}) {
-    const res = await this.axios.get<ListApiResponseInJson<ApiSchema>>(endpoint, {
+    // const res = await this.axios.get<ListApiResponseInJson<ApiSchema>>(endpoint, {
+    const res = await this.axios.get(endpoint, {
       params: query,
     })
     return new ListApiResponse(res.data, Constructor)
@@ -69,7 +72,8 @@ export class HacoCmsClient {
       throw new Error(`need Project-Draft-Token to get draft contents`)
     }
 
-    const res = await this.axiosDraft.get<ListApiResponseInJson<ApiSchema>>(endpoint, {
+    // const res = await this.axiosDraft.get<ListApiResponseInJson<ApiSchema>>(endpoint, {
+    const res = await this.axiosDraft.get(endpoint, {
       params: query,
     })
     return new ListApiResponse(res.data, Constructor)
@@ -85,7 +89,8 @@ export class HacoCmsClient {
    */
   async getSingle<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string) {
     const axios = this.axiosDraft ?? this.axios
-    const res = await axios.get<JsonType<ApiSchema>>(endpoint)
+    // const res = await axios.get<JsonType<ApiSchema>>(endpoint)
+    const res = await axios.get(endpoint)
     return new Constructor(res.data)
   }
 
@@ -102,7 +107,8 @@ export class HacoCmsClient {
   async getContent<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, id: string, draftToken?: string) {
     const axios = this.axiosDraft ?? this.axios
     const params = draftToken ? { draft: draftToken } : {}
-    const res = await axios.get<JsonType<ApiSchema>>(`${endpoint}/${id}`, { params })
+    // const res = await axios.get<JsonType<ApiSchema>>(`${endpoint}/${id}`, { params })
+    const res = await axios.get(`${endpoint}/${id}`, { params })
     return new Constructor(res.data)
   }
 }
