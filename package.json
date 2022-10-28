@@ -1,6 +1,6 @@
 {
   "name": "hacocms-js-sdk",
-  "version": "1.2.0-3",
+  "version": "1.2.0-4",
   "description": "hacoCMS SDK for JavaScript/TypeScript",
   "type": "module",
   "main": "dist/cjs/index.cjs",
