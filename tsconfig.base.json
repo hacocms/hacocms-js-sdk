@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
-    "esModuleInterop": true,
     "strict": true,
     "declaration": true,
     "experimentalDecorators": true,
