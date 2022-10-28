@@ -1,8 +1,9 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
     "outDir": "dist/esm"
   }
