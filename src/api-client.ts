@@ -1,17 +1,17 @@
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import { ApiContent } from './api-content.js'
-import { ConstructorFromJson, JsonType } from './json-utils.js'
 import { ListApiResponse, ListApiResponseInJson } from './api-response.js'
+import { ConstructorFromJson, JsonType } from './json-utils.js'
 import { QueryParameters } from './query.js'
 
 /**
  * hacoCMS の API クライアント
  */
 export class HacoCmsClient {
-  private readonly axios
+  private readonly axios: AxiosInstance
 
   // 下書き取得用
-  private readonly axiosDraft
+  private readonly axiosDraft?: AxiosInstance
 
   /**
    * @param baseURL API のベース URL `https://{アカウント識別子}-{サブドメイン}.hacocms.com/`
