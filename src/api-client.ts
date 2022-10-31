@@ -14,7 +14,7 @@ export class HacoCmsClient {
   private readonly axiosDraft?: AxiosInstance
 
   /**
-   * @param baseURL API のベース URL `https://{アカウント識別子}-{サブドメイン}.hacocms.com/`
+   * @param baseURL API のベース URL `https://{プロジェクトのサブドメイン}.hacocms.com/`
    * @param accessToken プロジェクトの Access-Token
    * @param projectDraftToken _(optional)_ プロジェクトの Project-Draft-Token
    */
