@@ -1,8 +1,10 @@
-name: 'coverage'
+name: coverage
+
 on:
   pull_request:
     branches:
       - main
+
 jobs:
   coverage:
     permissions:
@@ -15,3 +17,11 @@ jobs:
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           test-script: npm test
+          annotations: none
+          output: report-markdown
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Output report to summary
+        run: |
+          cat <<EOS >>$GITHUB_STEP_SUMMARY
+          ${{ steps.coverage-report.outputs.report }}
+          EOS
