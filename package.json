@@ -9,16 +9,16 @@
   "exports": {
     ".": {
       "import": {
-        "default": "./dist/esm/index.js",
-        "types": "./dist/esm/index.d.ts"
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
       },
       "require": {
-        "default": "./dist/cjs/index.cjs",
-        "types": "./dist/cjs/index.d.ts"
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.cjs"
       },
       "node": {
-        "default": "./dist/cjs/index.cjs",
-        "types": "./dist/cjs/index.d.ts"
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.cjs"
       }
     }
   },
