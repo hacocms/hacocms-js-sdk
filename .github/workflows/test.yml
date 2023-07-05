@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14, 16, 18]
+        node: [14, 16, 18, 20, latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/setup-node@v3
@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14, 16, 18]
+        node: [14, 16, 18, 20]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/setup-node@v3
@@ -58,12 +58,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14, 16, 18]
+        node: [14, 16, 18, 20]
         experimental: [false]
-        # include:
-        #   - os: ubuntu-latest
-        #     node: 20
-        #     experimental: true
+        include:
+          - os: ubuntu-latest
+            node: latest
+            experimental: true
     continue-on-error: ${{ matrix.experimental }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -84,7 +84,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [16]
+        node: [20]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/setup-node@v3
