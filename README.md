@@ -28,7 +28,7 @@ import {
 const client = new HacoCmsClient(
   'https://{プロジェクトのサブドメイン}.hacocms.com', // API のベース URL
   'ACCESS_TOKEN', // プロジェクトの Access-Token
-  'PROJECT_DRAFT_TOKEN' // オプション：プロジェクトの Project-Draft-Token
+  'PROJECT_DRAFT_TOKEN', // オプション：プロジェクトの Project-Draft-Token
 )
 
 // API スキーマの定義（例）
