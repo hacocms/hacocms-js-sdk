@@ -26,7 +26,7 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json && bash ./hacks/replace-cjs.bash",
-    "clean": "rimraf dist",
+    "clean": "node -e 'fs.rmSync(`dist`, {recursive:true, force:true})'",
     "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' npx jest",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint src/**",
@@ -62,7 +62,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "jest": "^29.6.0",
     "prettier": "^2.8.8",
-    "rimraf": "^3.0.2",
     "ts-jest": "^29.1.1",
     "typescript": "^4.9.5"
   },
