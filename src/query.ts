@@ -1,6 +1,7 @@
 /**
  * ソートクエリ
  */
+// biome-ignore lint/complexity/noStaticOnlyClass: backward-compatibility
 export class SortQuery {
   /**
    * ソートクエリ文字列を組み立てます。
@@ -9,7 +10,7 @@ export class SortQuery {
    * @returns ソートクエリ文字列
    */
   static build(...orders: (string | readonly [string, 'desc'])[]) {
-    return orders.map((order) => (order instanceof Array ? `-${order[0]}` : order)).join(',')
+    return orders.map((order) => (Array.isArray(order) ? `-${order[0]}` : order)).join(',')
   }
 }
 

@@ -13,6 +13,7 @@ const dummyResponse = JSON.stringify({
   data: [],
 })
 
+// biome-ignore lint/suspicious/noExplicitAny: this accepts any values
 const spyHeader = (requestHeader: Map<string, any>) => (req: http.IncomingMessage, res: http.ServerResponse) => {
   for (const x in req.headers) {
     requestHeader.set(x, req.headers[x])
@@ -20,16 +21,17 @@ const spyHeader = (requestHeader: Map<string, any>) => (req: http.IncomingMessag
   res.end(dummyResponse)
 }
 const spyQueryParams = (params: Map<string, string>) => (req: http.IncomingMessage, res: http.ServerResponse) => {
-  new URL(req.url!, 'http://localhost/').searchParams.forEach((value, key) => {
+  const { searchParams } = new URL(req.url ?? '/', 'http://localhost/')
+  for (const [key, value] of searchParams) {
     params.set(key, value)
-  })
+  }
   res.end(dummyResponse)
 }
 
 let stubServer: http.Server
 
 afterEach(() => {
-  if (stubServer && stubServer.listening) {
+  if (stubServer?.listening) {
     stubServer.close()
   }
 })
@@ -130,6 +132,7 @@ describe('getSingle', () => {
   })
 
   test('request header has Haco-Project-Draft-Token with the value given by client constructor', async () => {
+    // biome-ignore lint/suspicious/noExplicitAny:
     const requestHeader = new Map<string, any>()
     stubServer = await createServer(spyHeader(requestHeader))
 
@@ -142,6 +145,7 @@ describe('getSingle', () => {
 
 describe('getListIncludingDraft', () => {
   test('request header has Haco-Project-Draft-Token with the value given by client constructor', async () => {
+    // biome-ignore lint/suspicious/noExplicitAny:
     const requestHeader = new Map<string, any>()
     stubServer = await createServer(spyHeader(requestHeader))
 
@@ -189,6 +193,7 @@ describe('getContent', () => {
   })
 
   test('request header has Haco-Project-Draft-Token with the value given by client constructor', async () => {
+    // biome-ignore lint/suspicious/noExplicitAny:
     const requestHeader = new Map<string, any>()
     stubServer = await createServer(spyHeader(requestHeader))
 

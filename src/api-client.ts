@@ -22,6 +22,7 @@ export class HacoCmsClient {
     const headers = {
       Authorization: `Bearer ${accessToken}`,
     }
+    // biome-ignore lint/style/noParameterAssign: this assignment is intended to shadow
     baseURL = new URL('/api/v1/', baseURL).toString()
     this.axios = axios.create({
       baseURL,
@@ -66,7 +67,7 @@ export class HacoCmsClient {
    */
   async getListIncludingDraft<ApiSchema extends ApiContent>(Constructor: ConstructorFromJson<ApiSchema>, endpoint: string, query: Partial<QueryParameters> = {}) {
     if (!this.axiosDraft) {
-      throw new Error(`need Project-Draft-Token to get draft contents`)
+      throw new Error('need Project-Draft-Token to get draft contents')
     }
 
     const res = await this.axiosDraft.get<ListApiResponseInJson<ApiSchema>>(endpoint, {

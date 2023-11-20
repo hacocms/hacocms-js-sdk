@@ -1,4 +1,5 @@
 type ExcludePseudoFields<O extends object> = { [K in keyof O]: K extends `$${string}` ? never : O[K] }
+// biome-ignore lint/complexity/noBannedTypes: this accepts any function
 type ExcludeFunction<O extends object> = { [K in keyof O]: O[K] extends Function ? never : K }[keyof O]
 
 type ExcludeFields<O extends object> = ExcludeFunction<ExcludePseudoFields<O>>
