@@ -36,7 +36,7 @@
     "type": "git",
     "url": "git+https://github.com/hacocms/hacocms-js-sdk.git"
   },
-  "author": "Seesaa Inc.",
+  "author": "FAN Communications, Inc.",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/hacocms/hacocms-js-sdk/issues"
