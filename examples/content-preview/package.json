@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "hacocms-js-sdk": "^1.2.1"
+    "dotenv": "^16.4.1",
+    "hacocms-js-sdk": "^1.6.0"
   }
 }
