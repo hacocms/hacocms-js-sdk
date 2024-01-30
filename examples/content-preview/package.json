@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "A sample implementation of hacoCMS content preview",
-  "author": "Seesaa Inc.",
+  "author": "FAN Communications, Inc.",
   "license": "MIT",
   "main": "index.js",
   "type": "module",
