@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "dotenv": "^16.0.3",
-    "hacocms-js-sdk": "^1.2.1"
+    "hacocms-js-sdk": "^1.6.0"
   }
 }
