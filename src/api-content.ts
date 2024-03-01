@@ -25,7 +25,7 @@ export abstract class ApiContent {
   constructor(json: JsonType<ApiContent>) {
     this.id = json.id
     this.createdAt = toDate(json.createdAt)
-    this.updatedAt = toDate(json.createdAt)
+    this.updatedAt = toDate(json.updatedAt)
     this.publishedAt = toNullableDate(json.publishedAt)
     this.closedAt = toNullableDate(json.closedAt)
   }
