@@ -1,6 +1,6 @@
 {
   "name": "hacocms-js-sdk",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "hacoCMS SDK for JavaScript/TypeScript",
   "type": "module",
   "main": "dist/cjs/index.cjs",
@@ -52,5 +52,7 @@
     "ts-jest": "^29.1.2",
     "typescript": "^5.3.3"
   },
-  "files": ["dist"]
+  "files": [
+    "dist"
+  ]
 }
