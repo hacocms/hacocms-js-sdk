@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import { ApiContent, HacoCmsClient } from 'hacocms-js-sdk'
-import { createServer } from 'http'
+import { createServer } from 'node:http'
 
 dotenv.config()
 

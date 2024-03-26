@@ -1,5 +1,5 @@
-import http from 'http'
-import { AddressInfo } from 'net'
+import http from 'node:http'
+import type { AddressInfo } from 'node:net'
 import { HacoCmsClient } from './api-client.js'
 import { ApiContent } from './api-content.js'
 

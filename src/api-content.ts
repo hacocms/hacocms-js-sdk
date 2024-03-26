@@ -1,4 +1,4 @@
-import { JsonType, toDate, toNullableDate } from './json-utils.js'
+import { type JsonType, toDate, toNullableDate } from './json-utils.js'
 
 /**
  * コンテンツの基底クラス

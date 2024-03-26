@@ -1,8 +1,8 @@
-import axios, { AxiosInstance } from 'axios'
-import { ApiContent } from './api-content.js'
-import { ListApiResponse, ListApiResponseInJson } from './api-response.js'
-import { ConstructorFromJson, JsonType } from './json-utils.js'
-import { QueryParameters } from './query.js'
+import axios, { type AxiosInstance } from 'axios'
+import type { ApiContent } from './api-content.js'
+import { ListApiResponse, type ListApiResponseInJson } from './api-response.js'
+import type { ConstructorFromJson, JsonType } from './json-utils.js'
+import type { QueryParameters } from './query.js'
 
 /**
  * hacoCMS の API クライアント
